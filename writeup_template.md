@@ -48,82 +48,73 @@ python drive.py model.h5
 
 #### 3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The model.py file contains the code for training and saving the convolution neural network. in addition to comments explaining how the code works.
 
 ### Model Architecture and Training Strategy
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+The model is based on NVIDIA's [End-to-End Deep Learning for Self-Driving Cars](http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf)
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+Keras was used to implement the pipline described in the paper, to split dataset as well and for training and validating the model.
+Tensorflow was used as backend for Keras.
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
-
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting.
+In addition, the model was trained using slight random adjustment for steering angle when corresponding to an image from left/right front-facing camera.
+The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer with mean squared error loss function, so the learning rate was not tuned manually.
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+Training data was chosen to keep the vehicle driving on the road. Data was augmented in a strategy similar to NVIDIA's making use of three front-facing cameras.
 
-For details about how I created the training data, see the next section. 
+Input images were converted from RGB to YUV color space and were also cropped as shown in the class.
 
 ### Model Architecture and Training Strategy
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+Starting from NVIDIA's model, an implementaion for [End-to-End Deep Learning for Self-Driving Cars](http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf) which incorporates several convolutional neural network layers, combined with ReLu activation layers, then several fully connected layers.
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+Initially, the only modification was to add a fully connected layer producing one output which is used for steering.
+In addition, input layer was subjected to normalization and cropping to reduce unncessary processing and memory resources.
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
+Front facing center camera image and steering angle data was split into a training and validation set.
+Training using adam optimizer with mean square error over 10 epochs resulted in validation loss less than 3%.
+Running this model in autonomous mode was successful except in certain parts of the road where the car wasn't able to recover quickly to the center after taking a hard turn (especially if combined with a ramp).
 
-To combat the overfitting, I modified the model so that ...
+To help the model generalize, the right and left camera images were used with steering angle adjusted randomly between 0.01-0.2 so that the model would generalize and recover the vehicle from the side of the road.
+Switching to YUV color space like NVIDIA helped better steering in certain areas of the road.
 
-Then I ... 
+Training with the extended data set of 19284 images over 10 epochs resulted in 1.39% validation loss.
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
+Running the simulator to see how well the car was driving around track one, the vehicle is able to drive autonomously around the track without leaving the road.
+However, it wasn't able to drive track two where there are two lanes in the road and there is another road in the camera view.
 
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+Additional training on partial track two driving (less than 5000 images) was showing overfitting after 6th epoch and with 15.46% validation loss.
+This re-trained model wasn't expected to drive properly but the initial training helped the car drive most of this part.
+
+More data needs to be collected for track two, but it's really tricky to drive even for me in the simulator.
+In addition, more dropout layers need to be added to reduce overfitting.
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
-
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
-
-![alt text][image1]
+The final model architecture consisted of NVIDIA's model described in "End to End Learning for Self-Driving Cars" with an additional fully connected layer with one output node.
 
 #### 3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+Using the dataset provided with the resources, we used the center front-facing camera as input and steering angle as labels.
+In addition, right and left front-facing camera images were used with steering angle adjusted randomly between 0.01-0.2 so that the model would generalize and recover the vehicle from the side of the road.
+Input images were converted from RGB to YUV color space before training.
 
-![alt text][image2]
+Also, during testing on Simulator with autonomous mode the camera image was converted from RGB to YUV color space before inferring the steering angle using the model.
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+Parameter for validation_split of 0.2 was used when training the model using Keras model.fit
+Learning rate was automatically tuned using adam optimizer utilizing mean squared error loss function
 
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
-
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+The resulting training with the extended data set of 19284 images over 10 epochs resulted in 1.39% validation loss.
