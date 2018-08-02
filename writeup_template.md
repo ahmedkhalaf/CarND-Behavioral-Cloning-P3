@@ -75,11 +75,18 @@ Training data was chosen to keep the vehicle driving on the road. Data was augme
 
 Input images were converted from RGB to YUV color space and were also cropped as shown in the class.
 
+A new generator-based impelemntation was deveoped and tested.
+The generator-based impelemntation was really slow, so wasn't suitable to try out several changes and wasn't really needed.
+
 ### Model Architecture and Training Strategy
 
 #### 1. Solution Design Approach
 
 Starting from NVIDIA's model, an implementaion for [End-to-End Deep Learning for Self-Driving Cars](http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf) which incorporates several convolutional neural network layers, combined with ReLu activation layers, then several fully connected layers.
+
+It's partially based on the implementation notes from:
+https://github.com/Yunski/nvidia-cnn/blob/master/cnn.py
+https://github.com/naokishibuya/car-behavioral-cloning/blob/master/README.md
 
 Initially, the only modification was to add a fully connected layer producing one output which is used for steering.
 In addition, input layer was subjected to normalization and cropping to reduce unncessary processing and memory resources.
@@ -93,11 +100,14 @@ Switching to YUV color space like NVIDIA helped better steering in certain areas
 
 Training with the extended data set of 19284 images over 10 epochs resulted in 1.39% validation loss.
 
-Running the simulator to see how well the car was driving around track one, the vehicle is able to drive autonomously around the track without leaving the road.
-However, it wasn't able to drive track two where there are two lanes in the road and there is another road in the camera view.
+Running the simulator to see how well the car was driving around track one, the vehicle is able to drive autonomously around the track without leaving the road (see video.mp4).
+However, it wasn't able to drive track two where there are two lanes in the road and there is another road in the camera view (see video_track2.mp4).
+
+One interesting approach was to combine all images from three facing front-cameras, it was implemented and showed better validation loss, however it was not useful with the simulator autonomous mode where only one camera is input.
+So, this approach was discarded.
 
 Additional training on partial track two driving (less than 5000 images) was showing overfitting after 6th epoch and with 15.46% validation loss.
-This re-trained model wasn't expected to drive properly but the initial training helped the car drive most of this part.
+This re-trained model wasn't expected to drive properly but the initial training helped the car drive most of this part (see video_track2_newdata.mp4).
 
 More data needs to be collected for track two, but it's really tricky to drive even for me in the simulator.
 In addition, more dropout layers need to be added to reduce overfitting.
