@@ -128,7 +128,7 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='adam')
 
 print(model.summary())
-plot_model(model, to_file='model.png')
+plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=True)
 input("Press Enter to continue...")
 
 #validation_split=0.2
