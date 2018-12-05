@@ -116,6 +116,47 @@ In addition, more dropout layers need to be added to reduce overfitting.
 
 The final model architecture consisted of NVIDIA's model described in "End to End Learning for Self-Driving Cars" with an additional fully connected layer with one output node.
 
+The origianl architecture was visualized in the mentioned paper as follows:
+![Original visualization from NVIDIA's paper](https://devblogs.nvidia.com/parallelforall/wp-content/uploads/2016/08/cnn-architecture-624x890.png)
+
+Keras Model visualization utility `plot_model` we produce a graph using  `graphviz` representing the implementation 
+![Model visual representation](model.png)
+
+Using the API `model.summary()` text description final architecture is obtained as follows:
+
+```python
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #
+=================================================================
+lambda_1 (Lambda)            (None, 160, 320, 3)       0
+_________________________________________________________________
+cropping2d_1 (Cropping2D)    (None, 65, 320, 3)        0
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 31, 158, 36)       2736
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 14, 77, 48)        43248
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 12, 75, 64)        27712
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 10, 73, 64)        36928
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 46720)             0
+_________________________________________________________________
+dense_1 (Dense)              (None, 100)               4672100
+_________________________________________________________________
+dense_2 (Dense)              (None, 50)                5050
+_________________________________________________________________
+dense_3 (Dense)              (None, 10)                510
+_________________________________________________________________
+dense_4 (Dense)              (None, 10)                110
+_________________________________________________________________
+dense_5 (Dense)              (None, 1)                 11
+=================================================================
+Total params: 4,788,405
+Trainable params: 4,788,405
+Non-trainable params: 0
+```
+
 #### 3. Creation of the Training Set & Training Process
 
 Using the dataset provided with the resources, we used the center front-facing camera as input and steering angle as labels.
