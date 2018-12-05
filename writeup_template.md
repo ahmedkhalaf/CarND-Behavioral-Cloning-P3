@@ -156,7 +156,10 @@ Trainable params: 4,788,405
 Non-trainable params: 0
 ```
 
-Keras Model visualization utility `plot_model` we produce a graph using  `graphviz` representing our implementation 
+Keras Model visualization utility `plot_model` produces a graph utilizing  `graphviz` representing our implementation as follows:
+```python
+plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=True)
+```
 ![Model visual representation](model.png)
 
 
