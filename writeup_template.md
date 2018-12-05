@@ -120,10 +120,8 @@ The original architecture was visualized in the mentioned paper as follows:
 
 ![Original visualization from NVIDIA's paper](https://devblogs.nvidia.com/parallelforall/wp-content/uploads/2016/08/cnn-architecture-624x890.png)
 
-Keras Model visualization utility `plot_model` we produce a graph using  `graphviz` representing the implementation 
-![Model visual representation](model.png)
 
-Using the API `model.summary()` text description final architecture is obtained as follows:
+Using the API `model.summary()` text description of the implemented architecture is obtained as follows:
 
 ```python
 _________________________________________________________________
@@ -157,6 +155,10 @@ Total params: 4,788,405
 Trainable params: 4,788,405
 Non-trainable params: 0
 ```
+
+Keras Model visualization utility `plot_model` we produce a graph using  `graphviz` representing our implementation 
+![Model visual representation](model.png)
+
 
 #### 3. Creation of the Training Set & Training Process
 
