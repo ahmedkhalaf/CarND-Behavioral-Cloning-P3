@@ -116,7 +116,8 @@ In addition, more dropout layers need to be added to reduce overfitting.
 
 The final model architecture consisted of NVIDIA's model described in "End to End Learning for Self-Driving Cars" with an additional fully connected layer with one output node.
 
-The origianl architecture was visualized in the mentioned paper as follows:
+The original architecture was visualized in the mentioned paper as follows:
+
 ![Original visualization from NVIDIA's paper](https://devblogs.nvidia.com/parallelforall/wp-content/uploads/2016/08/cnn-architecture-624x890.png)
 
 Keras Model visualization utility `plot_model` we produce a graph using  `graphviz` representing the implementation 
