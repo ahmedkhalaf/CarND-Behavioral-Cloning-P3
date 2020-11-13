@@ -1,11 +1,5 @@
 # **Behavioral Cloning** 
 
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
 **Behavioral Cloning Project**
 
 The goals / steps of this project are the following:
@@ -175,3 +169,6 @@ Parameter for validation_split of 0.2 was used when training the model using Ker
 Learning rate was automatically tuned using adam optimizer utilizing mean squared error loss function
 
 The resulting training with the extended data set of 19284 images over 10 epochs resulted in 1.39% validation loss.
+
+#### 4. Result on TestTrack-1
+[Vehicle front Camera 60fps Video from the simulator](https://github.com/ahmedkhalaf/CarND-Behavioral-Cloning-P3/raw/master/run_1533_60fps.mp4)
